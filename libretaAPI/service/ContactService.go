@@ -4,7 +4,6 @@ import (
 	"api/src/datasource"
 	"api/src/model"
 	"database/sql"
-	"fmt"
 	"log"
 	"regexp"
 
@@ -68,7 +67,6 @@ func InsertContact(contact *model.Contact) error {
 		log.Fatal(err)
 	}
 	const query = `INSERT INTO Contact (name, phone, id) VALUES ($1, $2, $3) RETURNING id`
-	fmt.Printf("Inserting contact: %v\n", contact)
 	err = db.QueryRow(query, contact.Name, contact.Phone, contact.ID).Scan(&contact.ID)
 	db.Close()
 	return err
@@ -96,14 +94,7 @@ func searchByName(db *sql.DB, name string) ([]model.Contact, error) {
 	}
 	defer rows.Close()
 	var contacts []model.Contact
-	for rows.Next() {
-		var contact model.Contact
-		if err := rows.Scan(&contact.ID, &contact.Name, &contact.Phone); err != nil {
-			return nil, err
-		}
-		fmt.Printf("Contact: %s\n", contact.Name)
-		contacts = append(contacts, contact)
-	}
+	contacts, _ = getContactsFromRows(rows)
 	return contacts, nil
 }
 
@@ -114,6 +105,12 @@ func searchByPhone(db *sql.DB, phone string) ([]model.Contact, error) {
 		return nil, err
 	}
 	defer rows.Close()
+	var contacts []model.Contact
+	contacts, _ = getContactsFromRows(rows)
+	return contacts, nil
+}
+
+func getContactsFromRows(rows *sql.Rows) ([]model.Contact, error) {
 	var contacts []model.Contact
 	for rows.Next() {
 		var contact model.Contact
