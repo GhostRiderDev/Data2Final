@@ -4,25 +4,33 @@ import (
 	"api/src/model"
 	"api/src/service"
 	"net/http"
+	"sort"
 
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
 )
 
+type ByName []model.Contact
+
+func (a ByName) Len() int           { return len(a) }
+func (a ByName) Swap(i, j int)      { a[i], a[j] = a[j], a[i] }
+func (a ByName) Less(i, j int) bool { return a[i].Name < a[j].Name }
+
 func SearchContacts(c *gin.Context) {
 	search := c.Query("filter")
 
-	contact, err := service.SearchByNameOrPhone(search)
+	contacts, err := service.SearchByNameOrPhone(search)
 	if err != nil {
 		c.IndentedJSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
 
-	if contact == nil {
+	if contacts == nil {
 		c.IndentedJSON(http.StatusNotFound, gin.H{"message": "contact not found"})
 		return
 	}
-	c.IndentedJSON(http.StatusOK, contact)
+	sort.Sort(ByName(contacts))
+	c.IndentedJSON(http.StatusOK, contacts)
 }
 
 func GetContactByID(c *gin.Context) {
@@ -67,5 +75,6 @@ func GetContacts(c *gin.Context) {
 		c.IndentedJSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
+	sort.Sort(ByName(contacts))
 	c.IndentedJSON(http.StatusOK, contacts)
 }

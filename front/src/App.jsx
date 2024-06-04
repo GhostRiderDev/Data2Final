@@ -1,12 +1,13 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import "./App.css";
 import { getContacts, getFilterContacts } from "./services/contact";
 import { useStore } from "./store/contacts";
-import { FaSearch } from "react-icons/fa";
+import { FaSearch, FaSpinner } from "react-icons/fa";
 
 function App() {
   const contacts = useStore((state) => state.contacts);
   const setContacts = useStore((state) => state.setContacts);
+  const [contact, setContact] = useState(null);
 
   const fetchContacts = async () => {
     const contactsAPI = await getContacts();
@@ -35,7 +36,7 @@ function App() {
   };
 
   return (
-    <div className="w-screen h-screen bg-zinc-400 p-2">
+    <div className="w-screen h-screen bg-zinc-400 p-2 flex space-x-4">
       <div className="w-1/4 flex flex-col space-y-2 bg-stone-300 h-[95vh] rounded-md p-1">
         <div className="rounded-md">
           <form
@@ -57,12 +58,24 @@ function App() {
           contacts.map((c, index) => (
             <div
               key={index}
-              className="text-white px-2 py-1 bg-purple-700 rounded-md cursor-pointer"
+              className="text-white px-2 py-1 bg-purple-700 rounded-md cursor-pointer overflow-hidden shadow-lg"
             >
               <p className="text-lg font-semibold">{c.name}</p>
               <p>{c.phone}</p>
             </div>
           ))}
+      </div>
+      <div className="text-center block relative">
+        {!contacts.length && (
+          <>
+            <div className="animate-spin mx-auto left-96 absolute top-60">
+              <FaSpinner size={150} className="" color="orange" />
+            </div>
+            <div className=" mx-auto left-96 absolute top-96 mt-10 ml-10 text-xl font-bold text-orange-500 w-max">
+              is loading...
+            </div>
+          </>
+        )}
       </div>
     </div>
   );
