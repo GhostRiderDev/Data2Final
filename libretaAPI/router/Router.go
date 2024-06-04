@@ -21,7 +21,7 @@ func InitializeRoutes() {
 	app.GET("/contacts", controller.GetContacts)
 	app.POST("/contacts", controller.PostContact)
 	app.GET("/contacts/:id", controller.GetContactByID)
-	app.GET("/search", controller.SearchContacts)
+	app.GET("/contacts/search", controller.SearchContacts)
 
 	app.Run("localhost:8080")
 }

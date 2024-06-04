@@ -11,10 +11,7 @@ import (
 
 func SearchContacts(c *gin.Context) {
 	search := c.Query("filter")
-	if search == "" {
-		c.IndentedJSON(http.StatusBadRequest, gin.H{"error": "search parameter is required"})
-		return
-	}
+
 	contact, err := service.SearchByNameOrPhone(search)
 	if err != nil {
 		c.IndentedJSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
