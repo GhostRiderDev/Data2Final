@@ -66,8 +66,8 @@ func InsertContact(contact *model.Contact) error {
 	if err != nil {
 		log.Fatal(err)
 	}
-	const query = `INSERT INTO Contact (name, phone, id) VALUES ($1, $2, $3) RETURNING id`
-	err = db.QueryRow(query, contact.Name, contact.Phone, contact.ID).Scan(&contact.ID)
+	const query = `INSERT INTO Contact (name, phone, id, email) VALUES ($1, $2, $3, $4) RETURNING id`
+	err = db.QueryRow(query, contact.Name, contact.Phone, contact.ID, contact.Email).Scan(&contact.ID)
 	db.Close()
 	return err
 }

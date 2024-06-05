@@ -21,3 +21,11 @@ export const getFilterContacts = async (filter) => {
     return [];
   }
 };
+export const addContact = async (contact) => {
+  try {
+    const response = await axios.post(BASE_URL_CONTACTS, contact);
+    return response.data;
+  } catch (e) {
+    return [];
+  }
+}
