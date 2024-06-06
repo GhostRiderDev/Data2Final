@@ -4,11 +4,10 @@ import { useForm } from "react-hook-form";
 import { AlertsExito } from "./components/alerts/Alerts";
 
 function AggContact({ onclose }) {
-    const [contact, setContact] = useState(null)
+    const [_, setContact] = useState(null)
     const {
         register,
         handleSubmit,
-        watch,
         formState: { errors },
     } = useForm()
     const handleCancelar = () => {

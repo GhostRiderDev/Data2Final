@@ -18,7 +18,8 @@ func CreateTables() {
 	_, err = db.Exec(`CREATE TABLE IF NOT EXISTS Contact (
 				id TEXT PRIMARY KEY,
 				name TEXT,
-				phone TEXT
+				phone TEXT,
+				email TEXT
 		)`)
 
 	if err != nil {

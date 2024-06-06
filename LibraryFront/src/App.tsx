@@ -1,8 +1,7 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import "./App.css";
-import { getContacts, getFilterContacts } from "./services/contact";
-import { useStore } from "./store/contacts";
-import { FaSearch, FaSpinner } from "react-icons/fa";
+// import { getContacts, getFilterContacts } from "./services/contact";
+// import { useStore } from "./store/contacts";
 import { FaPlus } from "react-icons/fa6";
 import { Menu, Transition } from '@headlessui/react';
 import { Fragment } from 'react';
@@ -10,37 +9,37 @@ import AggContact from "./AggContact";
 import ViewContact from "./ViewContact";
 
 function App() {
-  const contacts = useStore((state) => state.contacts);
-  const setContacts = useStore((state) => state.setContacts);
-  const [contact, setContact] = useState(null);
+  // const contacts = useStore((state) => state.contacts);
+  // const setContacts = useStore((state) => state.setContacts);
+  // const [contact, setContact] = useState(null);
   const [showModal, setShowModal] = useState(false);
   const [showViewContact, setShowViewContact] = useState(false);
 
-  const fetchContacts = async () => {
-    const contactsAPI = await getContacts();
-    setContacts(contactsAPI);
-  };
+  // const fetchContacts = async () => {
+  //   const contactsAPI = await getContacts();
+  //   setContacts(contactsAPI);
+  // };
 
-  const fetchFilterContacts = async (filter) => {
-    const contactsFilters = await getFilterContacts(filter);
-    setContacts(contactsFilters);
-  };
+  // const fetchFilterContacts = async (filter) => {
+  //   const contactsFilters = await getFilterContacts(filter);
+  //   setContacts(contactsFilters);
+  // };
 
-  useEffect(() => {
-    fetchContacts();
-  }, []);
+  // useEffect(() => {
+  //   fetchContacts();
+  // }, []);
 
-  const handleOnChange = (e) => {
-    e.preventDefault();
-    const { value } = e.target;
-    fetchFilterContacts(value);
-  };
+  // const handleOnChange = (e) => {
+  //   e.preventDefault();
+  //   const { value } = e.target;
+  //   fetchFilterContacts(value);
+  // };
 
-  const handleOnSubmit = (e) => {
-    e.preventDefault();
-    const { value } = e.target.filter;
-    fetchFilterContacts(value);
-  };
+  // const handleOnSubmit = (e) => {
+  //   e.preventDefault();
+  //   const { value } = e.target.filter;
+  //   fetchFilterContacts(value);
+  // };
 
   const handleAddContact = () => {
     setShowModal(prevState => !prevState);
