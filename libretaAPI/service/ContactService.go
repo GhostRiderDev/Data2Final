@@ -18,7 +18,8 @@ func CreateTables() {
 	_, err = db.Exec(`CREATE TABLE IF NOT EXISTS Contact (
 				id TEXT PRIMARY KEY,
 				name TEXT,
-				phone TEXT
+				phone TEXT,
+				email TEXT
 		)`)
 
 	if err != nil {
@@ -44,7 +45,7 @@ func GetAllContacts() ([]model.Contact, error) {
 	if err != nil {
 		log.Fatal(err)
 	}
-	const query = `SELECT id,name,phone from Contact`
+	const query = `SELECT id,name,phone,email from Contact`
 	rows, err := db.Query(query)
 	if err != nil {
 		return nil, err
@@ -53,7 +54,7 @@ func GetAllContacts() ([]model.Contact, error) {
 	var contacts []model.Contact
 	for rows.Next() {
 		var contact model.Contact
-		if err := rows.Scan(&contact.ID, &contact.Name, &contact.Phone); err != nil {
+		if err := rows.Scan(&contact.ID, &contact.Name, &contact.Phone, &contact.Email); err != nil {
 			return nil, err
 		}
 		contacts = append(contacts, contact)
@@ -66,8 +67,8 @@ func InsertContact(contact *model.Contact) error {
 	if err != nil {
 		log.Fatal(err)
 	}
-	const query = `INSERT INTO Contact (name, phone, id) VALUES ($1, $2, $3) RETURNING id`
-	err = db.QueryRow(query, contact.Name, contact.Phone, contact.ID).Scan(&contact.ID)
+	const query = `INSERT INTO Contact (name, phone, id, email) VALUES ($1, $2, $3, $4) RETURNING id`
+	err = db.QueryRow(query, contact.Name, contact.Phone, contact.ID, contact.Email).Scan(&contact.ID)
 	db.Close()
 	return err
 }
