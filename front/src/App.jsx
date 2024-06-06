@@ -7,12 +7,14 @@ import { FaPlus } from "react-icons/fa6";
 import { Menu, Transition } from '@headlessui/react';
 import { Fragment } from 'react';
 import AggContact from "./AggContact";
+import ViewContact from "./ViewContact";
 
 function App() {
   const contacts = useStore((state) => state.contacts);
   const setContacts = useStore((state) => state.setContacts);
   const [contact, setContact] = useState(null);
   const [showModal, setShowModal] = useState(false);
+  const [showViewContact, setShowViewContact] = useState(false);
 
   const fetchContacts = async () => {
     const contactsAPI = await getContacts();
@@ -42,11 +44,12 @@ function App() {
 
   const handleAddContact = () => {
     setShowModal(prevState => !prevState);
+    setShowViewContact(false)
   };
 
   const handleViewContacts = () => {
-    setShowModal(prevState => !prevState);
-    // Logic to view contacts goes here
+    setShowViewContact(prevState => !prevState);
+    setShowModal(false);
   };
 
   return (
@@ -98,6 +101,7 @@ function App() {
           </Menu>
         </div>
         {showModal && <AggContact onclose={() => setShowModal(false)} />}
+        {showViewContact && <ViewContact onClose={() => setShowViewContact(false)} />}
       </div>
     </>
 

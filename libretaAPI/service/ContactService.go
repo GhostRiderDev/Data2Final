@@ -44,7 +44,7 @@ func GetAllContacts() ([]model.Contact, error) {
 	if err != nil {
 		log.Fatal(err)
 	}
-	const query = `SELECT id,name,phone from Contact`
+	const query = `SELECT id,name,phone,email from Contact`
 	rows, err := db.Query(query)
 	if err != nil {
 		return nil, err
@@ -53,7 +53,7 @@ func GetAllContacts() ([]model.Contact, error) {
 	var contacts []model.Contact
 	for rows.Next() {
 		var contact model.Contact
-		if err := rows.Scan(&contact.ID, &contact.Name, &contact.Phone); err != nil {
+		if err := rows.Scan(&contact.ID, &contact.Name, &contact.Phone, &contact.Email); err != nil {
 			return nil, err
 		}
 		contacts = append(contacts, contact)
